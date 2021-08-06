@@ -1,0 +1,120 @@
+.title-layout {
+    width: 25%;
+    margin: 0 auto;
+}
+
+.title-ribbon {
+    position: relative;
+    top: 0px;
+    height: 100px;
+}
+
+.title-ribbon > button {
+    position: absolute;
+    width: 75px;
+    height: 50px
+}
+
+.title-search {
+    text-align: center;
+}
+
+#title-menu {
+    top: 20px;
+    left: 10px;
+}
+
+#title-login {
+    right: 10px;
+    top: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 15px;
+}
+h3, h5 {
+    margin-left: 110px;
+}
+
+input {
+    width: 66%;
+}
+
+.chips-layout {
+    width: 100%;
+    text-align: center;
+}
+.chip {
+    display: inline;
+    width: auto;
+    height: 25px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+article {
+    position: relative;
+    top: 15px;
+    width: 50%;
+    margin: 0 auto;
+    height: 200px;
+}
+
+article button {
+    position: absolute;
+    top: 5px;
+    right: 15px;
+}
+
+article div img {
+    float: left;
+    width: 100px;
+    height: 100px;
+}
+
+article div {
+    position: relative;
+    top: 5px;
+    left: 5px;
+    width: 75%;
+}
+
+article p {
+    position: relative;
+    top: 5px;
+    left: 5px;
+    width: 100%;
+    clear: left;
+    
+}
+
+aside {
+    position: fixed;
+    overflow: hidden;
+    top: 100px;
+    left: 0;
+    width: 0;
+    height: 100%;
+    transition: 1s;
+    z-index: 1;
+}
+aside, h3, ul li {
+    transition: 0.5s;
+    overflow-x: hidden;
+
+}
+li {
+    list-style: none;
+    padding: 5px 0px;
+}
+
+@media only screen and (max-width: 768px) {
+    .title-search {
+        text-align: center;
+    }
+    .title-layout {
+        width: 50%
+    }
+    
+}
