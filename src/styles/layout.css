@@ -29,12 +29,16 @@
     top: 20px;
 }
 
+form {
+    display: inline;
+}
+
 h1 {
     text-align: center;
     margin-top: 0px;
     margin-bottom: 15px;
 }
-h3, h5 {
+h4, h5 {
     margin-left: 110px;
 }
 
@@ -56,15 +60,17 @@ input {
 article {
     position: relative;
     top: 15px;
-    width: 50%;
+    width: 550px;
     margin: 0 auto;
-    height: 200px;
+    border: black;
+    border-style: solid;
+    border-radius: 10px;
 }
 
 article button {
     position: absolute;
-    top: 5px;
-    right: 15px;
+    top: 0px;
+    right: 10px;
 }
 
 article div img {
@@ -75,17 +81,20 @@ article div img {
 
 article div {
     position: relative;
-    top: 5px;
+    top: -10px;
     left: 5px;
-    width: 75%;
+    right: 5px;
+    width: 100%;
+    height: 80%;
 }
 
 article p {
-    position: relative;
-    top: 5px;
+    display: block;
     left: 5px;
     width: 100%;
-    clear: left;
+    height: 20%;
+    overflow-y: hidden;
+    margin-top: 0px;
     
 }
 
@@ -99,14 +108,62 @@ aside {
     transition: 1s;
     z-index: 1;
 }
-aside, h3, ul li {
+ul {
+    padding: 0;
+    overflow-x: hidden;
+}
+h3, ul li {
+    text-align: center;
     transition: 0.5s;
     overflow-x: hidden;
-
-}
-li {
-    list-style: none;
     padding: 5px 0px;
+    list-style: none;
+}
+
+.button-container {
+    position: relative;
+    width: 100%;
+    height: calc(((75px) * 3) + 20px)
+}
+
+.action-button {
+    position: absolute;
+    bottom: 0;
+    right: 10px;
+    width: 75px;
+    height: 75px;
+}
+.subMenu-buttons {
+    position: relative;
+    overflow: hidden;
+    right: 10px;
+    bottom: 0px;
+    width: 75px;
+    height: 0px;
+    margin-left: auto;
+    transition: bottom;
+}
+
+.subMenu-buttons button {
+    width: 75px;
+    height: 75px;
+}
+.subMenu-buttons #web {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+.subMenu-buttons #news {
+    position: absolute;
+    bottom: calc(75px + 10px);
+    right: 0;
+}
+
+.content-container {
+    position: relative;
+    max-width: 1300px;
+    margin: 0 auto;
+    height: calc(550px + 100px);
 }
 
 @media only screen and (max-width: 768px) {
@@ -116,5 +173,11 @@ li {
     .title-layout {
         width: 50%
     }
-    
 }
+@media only screen and (max-width: 768px) {
+article {
+    width: 350px;
+}
+
+}
+
