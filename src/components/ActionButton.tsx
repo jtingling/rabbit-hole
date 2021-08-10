@@ -1,12 +1,15 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUrl, getUrl } from '../features/articles/searchSlice';
 import '../styles/layout.css';
 
 interface Props {
     subMenu: React.MutableRefObject<HTMLDivElement | null>
-    setUrl: Dispatch<SetStateAction<string>>
 }
-const ActionButton: React.FC<Props> = ({subMenu, setUrl}) => {
+const ActionButton: React.FC<Props> = ({subMenu }) => {
     const [ isOpen, setIsOpen] = useState(false);
+    const dispatch = useDispatch();
+    const searchUrl = useSelector(getUrl);
     const toggleButtons = (element: React.MutableRefObject<HTMLDivElement | null>): void => {
         if (element.current !== null) {
             if (isOpen) {
@@ -22,8 +25,8 @@ const ActionButton: React.FC<Props> = ({subMenu, setUrl}) => {
         <div className='button-container'>
             <button className='action-button' onClick={() => toggleButtons(subMenu)}>+</button>
             <div className='subMenu-buttons' ref={subMenu}>
-                <button id="web" onClick={()=>setUrl('https://contextualwebsearch-websearch-v1.p.rapidapi.com/api/Search/WebSearchAPI')}>Web</button>
-                <button id="news" onClick={()=>setUrl('https://contextualwebsearch-websearch-v1.p.rapidapi.com/api/search/NewsSearchAPI')}>News</button>
+                <button id="web" onClick={()=> dispatch(updateUrl('https://contextualwebsearch-websearch-v1.p.rapidapi.com/api/Search/WebSearchAPI'))}>Web</button>
+                <button id="news" onClick={()=>dispatch(updateUrl('https://contextualwebsearch-websearch-v1.p.rapidapi.com/api/search/NewsSearchAPI'))}>News</button>
             </div>
         </div>
 
