@@ -3,11 +3,13 @@ import type { RootState } from '../store';
 interface searchSlice {
     query: string,
     url: string,
+    similarUrl: string,
 }
 
 const initialState: searchSlice = {
     query: '',
-    url: '',
+    url: 'https://contextualwebsearch-websearch-v1.p.rapidapi.com/api/Search/WebSearchAPI',
+    similarUrl: 'https://keyword-analysis.p.rapidapi.com/api/query/SimilarQueries'
 }
 
 const searchSlice = createSlice({
@@ -30,4 +32,5 @@ const searchSlice = createSlice({
 export const { query, updateUrl, updateQuery } = searchSlice.actions;
 export const getQuery = (state: RootState ) => state.search.query;
 export const getUrl = (state: RootState) => state.search.url;
+export const getSimilarUrl = (state: RootState) => state.search.similarUrl;
 export default searchSlice.reducer;
