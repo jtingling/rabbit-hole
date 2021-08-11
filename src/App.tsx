@@ -7,7 +7,7 @@ import Title from './components/Title';
 import SideBar from './components/SideBar'
 import ActionButton from './components/ActionButton';
 import { getQuery, getUrl } from './features/articles/searchSlice';
-
+import magnifySVG from './images/magnify-glass.svg';
 
 const App: React.FC = () => {
   const [ responseData, setResponseData ] = useState<any>([]);
@@ -26,12 +26,14 @@ const App: React.FC = () => {
       }
       )()
     }
-  }, [searchWord, dispatch])
+  }, [searchWord, searchType, dispatch])
 
   const renderCards = () => {
     if (responseData !== "") {
       return responseData.map((result: any) => {
-        return <Card image={responseData.url} title={result.title} subTitle={"result"} stub={result.description}/>
+        let placeholder = "";
+        result.image.url === "" ? placeholder = magnifySVG : placeholder = result.image.url;
+        return <Card image={placeholder} title={result.title} stub={result.snippet} publishDate={result.datePublished}/>
       })
     } else {
       return (
