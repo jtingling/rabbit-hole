@@ -50,9 +50,7 @@ const Title: React.FunctionComponent<Props> = ({ menuRef }) => {
                 </div>
                 <button id="title-login" type='submit'>Log In</button>
             </div>
-            <div className='chips-layout'>
-                <Chips />
-            </div>
+            <Chips />
         </>
 
     )
