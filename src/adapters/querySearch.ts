@@ -11,7 +11,7 @@ var options: AxiosRequestConfig = {
   };
 
 async function querySearch (query: string, url: string): Promise<AxiosResponse<Object>> {
-    let response: AxiosResponse<Object> = {
+    let response: AxiosResponse<any> = {
         data: {},
         status: 404,
         statusText: 'Resource Not Found',
@@ -22,14 +22,11 @@ async function querySearch (query: string, url: string): Promise<AxiosResponse<O
         response = await axios.get(`${url}`,
         {
             ...options,
-            params: {q: `${query}`, pageNumber: '1', pageSize: '10', withThumbnails: 'false', location: 'us'},
+            params: {q: `${query}`},
         })
     } catch(e) {
-        if (e.response) {
-            console.log(e.response.data)
-        }
-        if (e.request) {
-            console.log(e.request.data)
+        if (axios.isAxiosError(e)) {
+            console.log(e)
         } else {
             console.log("Error", e.message)
         }
