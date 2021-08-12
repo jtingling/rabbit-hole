@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import listsReducer  from './lists/listSlice'
+import articleSlice  from './articles/articleSlice'
 import UsersReducer from './users/usersSlice'
 import searchSlice from './articles/searchSlice'
 
 export const store = configureStore({
     reducer: {
-        lists: listsReducer,
+        article: articleSlice,
         users: UsersReducer,
         search: searchSlice
     }
