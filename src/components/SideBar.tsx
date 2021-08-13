@@ -16,7 +16,7 @@ const SideBar: React.FunctionComponent<Props> = ({menuRef}) => {
             </ul>
             <ul>
                 <li><Link to="/SavedResults">Saved Results</Link></li>
-                <li>Pinned Queries</li>
+                <li><Link to="SearchHistory">Pinned Queries</Link></li>
                 <li>logout</li>
             </ul>
         </aside>
