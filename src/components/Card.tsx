@@ -13,7 +13,6 @@ export interface Props {
     url: string;
 }
 const Card: React.FC<Props> = ({title, stub, image, publishDate, id, url}) => {
-    const [ isSaved, setIsSaved ] = useState<boolean | null>(null)
     let dispatch = useDispatch()
 
     return (
@@ -21,7 +20,7 @@ const Card: React.FC<Props> = ({title, stub, image, publishDate, id, url}) => {
             <div>
                 <img src={image}/>
                 <div>
-                    <h4><a href={url}>{title}</a></h4>
+                    <h4><a href={url} target="_blank">{title}</a></h4>
                     <TimeAgo timestamp={publishDate}/>
                 </div>
                 <p>{stub}</p>
