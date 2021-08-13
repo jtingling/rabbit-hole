@@ -10,6 +10,7 @@ import ActionButton from './components/ActionButton';
 import { getQuery, getUrl } from './features/articles/searchSlice';
 import magnifySVG from './images/magnify-glass.svg';
 import SavedResults from './pages/SavedResults';
+import PinnedQueries from './pages/PinnedQueries';
 
 
 const App: React.FC = () => {
@@ -57,10 +58,11 @@ const App: React.FC = () => {
             }
           </Route>
           <Route path="/SavedResults" component={SavedResults}/>
+          <Route path="/SearchHistory" component={PinnedQueries}/>
 
         </Switch>
         <SideBar menuRef={sideBarRef} />
-        <ActionButton subMenu={subMenuRef} />
+        <ActionButton subMenu={subMenuRef}  />
       </div>
     </div>
   );
