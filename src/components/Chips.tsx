@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AxiosResponse } from 'axios'
 import '../styles/layout.css'
-import { querySearch } from '../adapters';
-import { getQuery, getSimilarUrl, getUrl } from '../features/articles/searchSlice';
+import { querySearch, searchWeb } from '../adapters';
+import { getQuery, getSimilarUrl, getUrl, updateQuery } from '../features/articles/searchSlice';
 
 interface IKeywords {
     name: string,
-    score: number
+    score?: number
 }
 
 const Chips: React.FC = () => {
@@ -28,7 +28,7 @@ const Chips: React.FC = () => {
             return (
                 keywords.map((word, idx) => {
                     if (idx < 10) {
-                        return <button className='chip'>{word.name}</button>
+                        return <button className='chip' onClick={()=> {dispatch(updateQuery(word.name)); searchWeb(searchWord, searchUrl)} }>{word.name}</button>
                     }
                 })
             )
