@@ -1,8 +1,9 @@
-import { id } from "date-fns/locale";
+
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addArticle, selectAllArticles, selectArticleById } from "../features/articles/articleSlice";
+
+import { useDispatch } from "react-redux";
+import { addArticle } from "../features/articles/articleSlice";
 import { Article } from '../features/articles/articleSlice'
 
 const SaveButton: React.FC<any> = ({resultData}) => {
@@ -18,11 +19,14 @@ const SaveButton: React.FC<any> = ({resultData}) => {
         publishDate: resultData.datePublished
 
     }
-    console.log(resultData);
     function toggleButton () {
         dispatch(addArticle(article))
         setIsSaved(true);
     }
+
+    useEffect(()=>{
+        setIsSaved(false);
+    },[resultData])
 
     return (
         <>
