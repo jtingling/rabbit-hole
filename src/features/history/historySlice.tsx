@@ -1,9 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from '../store';
-import { Search } from '../articles/searchSlice'
 
 interface IHistory {
-    searches: Search[]
+    searches: IQueryData[]
+}
+
+export interface IQueryData {
+    searchWord: string,
+    date: string,
+    searchType: string,
 }
 
 const initialState: IHistory = {
@@ -14,12 +19,12 @@ const historySlice = createSlice({
     name: 'history',
     initialState,
     reducers: {
-        addKeyword(state: IHistory, action: PayloadAction<Search>) {
+        addKeyword(state: IHistory, action: PayloadAction<IQueryData>) {
             state.searches.push(action.payload);
         },
-        removeKeyword(state: IHistory, action: PayloadAction<Search>) {
-            let idx = state.searches.findIndex(word => word.query === action.payload.query);
-            state.searches.map(word => word.query === action.payload.query && state.searches.splice(idx, 1));
+        removeKeyword(state: IHistory, action: PayloadAction<IQueryData>) {
+            let idx = state.searches.findIndex(word => word === action.payload);
+            state.searches.map(word => word === action.payload && state.searches.splice(idx, 1));
         }
     }
 })
