@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+
 import { removeKeyword, addKeyword, selectAllWords } from "../features/history/historySlice";
 import HistoryCard from "../components/HistoryCard";
 const PinnedQueries: React.FC = () => {
@@ -12,7 +12,7 @@ const PinnedQueries: React.FC = () => {
             {
                 pinnedWords.searches.map((queries) => {
                     return (
-                        <div><Link to="/"><HistoryCard word={queries} /></Link></div>
+                        <div><HistoryCard word={queries}/></div>
                     )
                 })
             }
