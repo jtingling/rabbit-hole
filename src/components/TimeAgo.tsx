@@ -1,9 +1,10 @@
-import { parseISO, formatDistanceToNow, isEqual  } from "date-fns"
+import { parseISO, formatDistanceToNow, isEqual, isDate, format  } from "date-fns"
 import React from 'react';
 interface Time {
-    timestamp: string
+    timestamp: string,
+    published: string
 }
-const TimeAgo: React.FC<Time> = ({timestamp}) => {
+const TimeAgo: React.FC<Time> = ({timestamp, published}) => {
     let date: Date;
     let isSameDate = true;
     let referenceDate = parseISO("0001-01-01T00:00:00");
@@ -11,13 +12,13 @@ const TimeAgo: React.FC<Time> = ({timestamp}) => {
     if(timestamp) {
         date = parseISO(timestamp)
         isSameDate = isEqual(date, referenceDate);
-        timeAgo = "Published " + formatDistanceToNow(date) + " ago";
+        
+        timeAgo = `${published}` + formatDistanceToNow(date) + " ago";
     }
-
     return (
         <>
         {
-            isSameDate ? <></> : <span title={timestamp}>&nbsp; <i>{timeAgo}</i></span>
+            isSameDate ? <></> : <span >&nbsp;<i>{timeAgo}</i></span>
         }
         </>
     )
