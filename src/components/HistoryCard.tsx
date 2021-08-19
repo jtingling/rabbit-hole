@@ -1,9 +1,14 @@
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { IQueryData, selectAllWords } from "../features/history/historySlice"
-
-import TimeAgo from "./TimeAgo"
+import '../styles/layout.css'
+import { Link } from "react-router-dom";
+import { updateQuery, updateUrl } from "../features/articles/searchSlice"
 
 const HistoryCard: React.FC<{ word: IQueryData }> = ({ word }) => {
+    let dispatch = useDispatch();
+    const { searchWord: query, searchType: url } = word;
+    let bracketIdx = word.date.search(/\(/);
+    const date = word.date.substr(0, bracketIdx); //all dates have the same format
     let findIdx;
     let searchApi;
     if (word.searchType.includes("WebSearchAPI")) {
@@ -13,10 +18,9 @@ const HistoryCard: React.FC<{ word: IQueryData }> = ({ word }) => {
     }
     searchApi = word.searchType.slice(findIdx, -3);
     return (
-        <div>
-            <h4>{word.searchWord}</h4>
-            <p>&nbsp;{searchApi}</p>
-            <span>&nbsp;<i>{word.date}</i></span>
+        <div className="history-card-container">
+            <p>Keyword: <Link to="/" onClick={() => { dispatch(updateUrl(url)); dispatch(updateQuery(query))} }>{word.searchWord}</Link> searched on: <span><i>{date}</i> with: {searchApi}</span></p>
+            
             <p></p>
         </div>
 
