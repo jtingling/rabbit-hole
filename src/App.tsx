@@ -8,9 +8,12 @@ import Title from './components/Title';
 import SideBar from './components/SideBar'
 import ActionButton from './components/ActionButton';
 import { getQuery, getUrl } from './features/articles/searchSlice';
+import { addKeyword, IQueryData } from './features/history/historySlice';
 import magnifySVG from './images/magnify-glass.svg';
 import SavedResults from './pages/SavedResults';
 import PinnedQueries from './pages/PinnedQueries';
+import SaveButton from './components/SaveButton';
+import { parseISO } from 'date-fns/esm';
 
 
 const App: React.FC = () => {
@@ -26,7 +29,14 @@ const App: React.FC = () => {
     if (searchWord !== "") {
       (async () => {
         let response: AxiosResponse<any> = await searchWeb(searchWord, searchType)
-        console.log(response.data.value)
+        const date = new Date().toString();
+        const reducer: IQueryData = {
+          searchWord: searchWord,
+          date: date,
+          searchType: searchType
+        }
+        dispatch(addKeyword(reducer))
+        
         setResponseData(response.data.value)
       }
       )()
@@ -35,10 +45,18 @@ const App: React.FC = () => {
 
   const renderCards = () => {
     if (responseData !== "") {
+      console.log(responseData)
       return responseData.map((result: any) => {
         let placeholder = "";
         result.image.url === "" ? placeholder = magnifySVG : placeholder = result.image.url;
-        return <Card image={placeholder} title={result.title} stub={result.snippet} publishDate={result.datePublished} url={result.url} id={result.id} />
+        return <Card 
+          image={placeholder} 
+          title={result.title} 
+          stub={result.snippet} 
+          publishDate={result.datePublished} 
+          url={result.url} 
+          id={result.id}
+          children={<SaveButton resultData={result}/>}/>
       })
     } else {
       return (
@@ -48,7 +66,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div> {console.log(searchType, searchWord)}
+    <div>
       <Title menuRef={sideBarRef} />
       <div className='content-container'>
         <Switch>
