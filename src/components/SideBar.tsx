@@ -12,11 +12,11 @@ const SideBar: React.FunctionComponent<Props> = ({menuRef}) => {
         <aside id="menu" ref={menuRef}>
             <h3>Menu</h3>
             <ul>
-                <li><Link to="/">Home</Link></li>
+                <li><Link to="/">Search</Link></li>
             </ul>
             <ul>
                 <li><Link to="/SavedResults">Saved Results</Link></li>
-                <li><Link to="SearchHistory">Pinned Queries</Link></li>
+                <li><Link to="/SearchHistory">Search History</Link></li>
                 <li>logout</li>
             </ul>
         </aside>
