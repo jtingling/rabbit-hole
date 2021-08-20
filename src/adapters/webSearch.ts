@@ -10,7 +10,7 @@ var options: AxiosRequestConfig = {
     }
   };
 
-async function searchWeb (query: string, url: string): Promise<AxiosResponse<Object>> {
+async function searchWeb (query: string, url: string, page: number = 1): Promise<AxiosResponse<Object>> {
     let response: AxiosResponse<any> = {
         data: {},
         status: 404,
@@ -22,7 +22,7 @@ async function searchWeb (query: string, url: string): Promise<AxiosResponse<Obj
         response = await axios.get(`${url}`,
         {
             ...options,
-            params: {q: `${query}`, pageNumber: '1', pageSize: '10', withThumbnails: 'false', location: 'us'},
+            params: {q: `${query}`, pageNumber: `${page}`, pageSize: '10', withThumbnails: 'false', location: 'us'},
         })
     } catch(e) {
         if (axios.isAxiosError(e)) {
