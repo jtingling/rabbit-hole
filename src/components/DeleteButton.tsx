@@ -1,6 +1,6 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useEffect, useState } from 'react';
-import { removeArticle, selectAllArticles } from "../features/articles/articleSlice";
+import { removeArticle  } from "../features/articles/articleSlice";
 
 const DeleteButton: React.FC<any> = ({id}) => {
 

@@ -1,11 +1,12 @@
-import { useDispatch, useSelector } from "react-redux"
-import { IQueryData, selectAllWords } from "../features/history/historySlice"
+import { useDispatch } from "react-redux"
+import { IQueryData } from "../features/history/historySlice"
 import '../styles/layout.css'
 import { Link } from "react-router-dom";
 import { updateQuery, updateUrl } from "../features/articles/searchSlice"
 
 const HistoryCard: React.FC<{ word: IQueryData }> = ({ word }) => {
     let dispatch = useDispatch();
+    console.log(word);
     const { searchWord: query, searchType: url } = word;
     let bracketIdx = word.date.search(/\(/);
     const date = word.date.substr(0, bracketIdx); //all dates have the same format

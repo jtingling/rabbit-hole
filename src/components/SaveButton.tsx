@@ -1,7 +1,5 @@
-
 import React, { useState } from "react";
 import { useEffect } from "react";
-
 import { useDispatch } from "react-redux";
 import { addArticle } from "../features/articles/articleSlice";
 import { Article } from '../features/articles/articleSlice'

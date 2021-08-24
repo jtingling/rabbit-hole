@@ -1,6 +1,6 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
-import { removeKeyword, addKeyword, selectAllWords } from "../features/history/historySlice";
+import { selectAllWords } from "../features/history/historySlice";
 import HistoryCard from "../components/HistoryCard";
 const PinnedQueries: React.FC = () => {
     const pinnedWords = useSelector(selectAllWords);

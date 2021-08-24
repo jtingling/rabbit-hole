@@ -1,4 +1,4 @@
-import { createSlice, PrepareAction, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from '../store';
 
 export interface Search {
@@ -17,7 +17,7 @@ const searchSlice = createSlice({
     name: 'search',
     initialState,
     reducers: {
-        query(state: Search, action: PayloadAction<Search>) {
+        query(state: Search, action: PayloadAction<{query: string, url: string}>) {
             const { query, url } = action.payload
             state.query = query;
             state.url = url;

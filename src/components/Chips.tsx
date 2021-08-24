@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { AxiosResponse } from 'axios'
 import '../styles/layout.css'
 import { querySearch, searchWeb } from '../adapters';
 import { getQuery, getSimilarUrl, getUrl, updateQuery } from '../features/articles/searchSlice';
@@ -18,10 +17,14 @@ const Chips: React.FC = () => {
     let dispatch = useDispatch()
     useEffect(()=>{
         ( async () => {
-            let response: AxiosResponse<any> = await querySearch(searchWord, similarUrl);
-            setKeywords(response.data)
+            try {
+                let response: any = await querySearch(searchWord, similarUrl);
+                setKeywords(response.data)
+            } catch(e) {
+                console.log(e)
+            }
         })()
-    }, [searchWord, searchUrl, dispatch])
+    }, [searchWord, searchUrl, dispatch, similarUrl])
 
     const renderChips = () => {
         if (keywords.length > 0) {
@@ -29,7 +32,7 @@ const Chips: React.FC = () => {
                 keywords.map((word, idx) => {
                     if (idx < 10) {
                         return <button className='chip' onClick={()=> {dispatch(updateQuery(word.name)); searchWeb(searchWord, searchUrl)} }>{word.name}</button>
-                    }
+                    } else return null;
                 })
             )
         } else {
@@ -37,7 +40,7 @@ const Chips: React.FC = () => {
         }
     }
     return (
-        <div className='chips-layout'> {console.log(searchWord, similarUrl)}
+        <div className='chips-layout'>
         {renderChips()}
         </div>
     )

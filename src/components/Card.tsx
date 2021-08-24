@@ -1,9 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import '../styles/layout.css'
 import TimeAgo from './TimeAgo'
-import { useDispatch, useSelector } from 'react-redux'
-import { addArticle, removeArticle, selectAllArticles } from '../features/articles/articleSlice'
-import SaveButton from './SaveButton'
 
 export interface Props {
     id: string,
@@ -14,15 +11,12 @@ export interface Props {
     url: string;
 }
 const Card: React.FC<Props> = ({ title, stub, image, publishDate, id, url, children}) => {
-    let dispatch = useDispatch()
-    let savedArticles = useSelector(selectAllArticles)
-
     return (
         <article key={id}>
             <div>
-                <img src={image} />
+                <img src={image} alt={title}/>
                 <div>
-                    <h4><a href={url} target="_blank">{title}</a></h4>
+                    <h4><a href={url} target="_blank" rel="noreferrer">{title}</a></h4>
                     
                     <TimeAgo timestamp={publishDate} published={"Published "}/>
                 </div>

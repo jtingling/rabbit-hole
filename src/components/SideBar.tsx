@@ -1,4 +1,3 @@
-import { useState, useEffect, useRef } from 'react'
 import { Link }  from 'react-router-dom'
 import '../styles/layout.css'
 import '../styles/colors.css'
