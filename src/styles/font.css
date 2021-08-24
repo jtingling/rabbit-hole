@@ -1,0 +1,11 @@
+/*SideBar.tsx*/
+h3 {
+    font-size: xx-large;
+    border-bottom-style: solid;
+    border-bottom-color: black;
+    border-bottom-width: 5px;
+}
+
+li {
+    font-size: x-large;
+}
