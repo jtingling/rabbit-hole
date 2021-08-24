@@ -1,0 +1,10 @@
+/*SideBar.tsx*/
+aside {
+    background-color: lightblue;
+}
+
+li:hover {
+    background-color: lightcoral;
+}
+
+
