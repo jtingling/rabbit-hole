@@ -10,7 +10,7 @@ var options: AxiosRequestConfig = {
     }
   };
 
-async function searchWeb (query: string, url: string, page: number = 1): Promise<AxiosResponse<Object>> {
+async function searchWeb (query: string, url: string, page: number = 1){
     let response: AxiosResponse<any> = {
         data: {},
         status: 404,
@@ -26,7 +26,7 @@ async function searchWeb (query: string, url: string, page: number = 1): Promise
         })
     } catch(e) {
         if (axios.isAxiosError(e)) {
-            console.log(e)
+            return e
         } else {
             console.log("Error", e.message)
         }

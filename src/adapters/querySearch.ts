@@ -10,7 +10,7 @@ var options: AxiosRequestConfig = {
     }
   };
 
-async function querySearch (query: string, url: string): Promise<AxiosResponse<Object>> {
+async function querySearch (query: string, url: string){
     let response: AxiosResponse<any> = {
         data: {},
         status: 404,
@@ -26,7 +26,7 @@ async function querySearch (query: string, url: string): Promise<AxiosResponse<O
         })
     } catch(e) {
         if (axios.isAxiosError(e)) {
-            console.log(e)
+            return e
         } else {
             console.log("Error", e.message)
         }
