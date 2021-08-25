@@ -34,23 +34,17 @@ const App: React.FC = () => {
 
   useEffect(()=>{
     window.onscroll = _.debounce(async()=>{
-      let data = responseData;
       let page = pageNumber
       if (error || isLoading) return;
       console.log(page);
       console.log(Math.round(window.innerHeight), Math.round(document.documentElement.scrollTop), document.documentElement.offsetHeight)
-      if (Math.round((window.innerHeight + document.documentElement.scrollTop) - 40) === document.documentElement.offsetHeight) { //nav has fixed position and must be subtracted for equality
+      if (Math.round((window.innerHeight + document.documentElement.scrollTop) - 40) >= document.documentElement.offsetHeight) { //nav has fixed position and must be subtracted for equality
         page++
         console.log("match")
         try {
           setIsLoading(true);
           let response: any = await searchWeb(searchWord, searchType, page);
-
-          response.data.value.forEach((result: any)=>{
-            data.push(result);
-          })
-          console.log(data);
-          setResponseData(data);
+          setResponseData([...responseData, ...response.data.value])
           setPageNumber(page);
           setIsLoading(false)
         } catch (e) {
