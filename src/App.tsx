@@ -3,17 +3,22 @@ import { useEffect, useState, useRef } from 'react'
 import { searchWeb } from './adapters/webSearch'
 import { useDispatch, useSelector } from 'react-redux'
 import { Switch, Route } from 'react-router-dom';
+import _ from 'lodash'
+
 import Card from './components/Card';
 import Title from './components/Title';
 import SideBar from './components/SideBar'
 import ActionButton from './components/ActionButton';
+
 import { getQuery, getUrl } from './features/articles/searchSlice';
 import { addKeyword, IQueryData } from './features/history/historySlice';
+import { addId, selectAllArticles, addArticle } from './features/articles/articleSlice';
+
 import magnifySVG from './images/magnify-glass.svg';
 import SavedResults from './pages/SavedResults';
 import PinnedQueries from './pages/PinnedQueries';
 import SaveButton from './components/SaveButton';
-import _ from 'lodash'
+
 import Authorization from './components/Authorisation';
 import { loadGoogleScript } from './scripts/googleAuth';
 
@@ -26,11 +31,8 @@ const App: React.FC = () => {
   const [error, setError] = useState<boolean>(false);
   const [pageNumber, setPageNumber] = useState<number>(1)
   const [gapi, setGapi] = useState<any>(null);
-  const [googleAuth, setGoogleAuth] = useState<any>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [name, setName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [imageUrl, setImageUrl] = useState<string>('');
+  const [ db, setDb ] = useState<any>(null);
+  const [ id, setUserId ] = useState<string>('');
 
   const sideBarRef = useRef<HTMLElement>(null);
   const signInWindowRef = useRef<HTMLDivElement>(null);
@@ -46,85 +48,59 @@ const App: React.FC = () => {
 
   const displayRef = { display: isLoading ? "block" : "none" }
 
+  useEffect(()=>{
+    const dbName = 'articles';
+    let db: any;
+    let request = window.indexedDB.open(dbName, 1);
+    request.onerror = (event: any) => console.error("There has been an error: " + event)
+    request.onsuccess = (event: any) => {
+      db = event.target.result;
+      console.log(db);
+      setDb(db);
+      console.log("DB initialized.")
+    }
+  },[])
 
-
-  const onSuccess = (googleUser: any) => {
-    setIsLoggedIn(true);
-    const profile = googleUser.getBasicProfile();
-    setName(profile.getName());
-    setEmail(profile.getEmail());
-    setImageUrl(profile.getImageUrl());
-  };
-
-  const onFailure = () => {
-    setIsLoggedIn(false);
-  }
-
-  const renderSigninButton = (gapi: any) => {
-    gapi.signin2.render('google-signin', {
-      'scope': 'profile email',
-      'width': 240,
-      'height': 50,
-      'longtitle': true,
-      'theme': 'dark',
-      'onsuccess': onSuccess,
-      'onfailure': onFailure
-    });
-  }
-
-  const logOut = () => {
-    (async () => {
-      await googleAuth.signOut();
-      setIsLoggedIn(false);
-      renderSigninButton(gapi);
-    })();
-  };
+  useEffect(()=>{
+    if (id !== '') {
+      let objectStore = db.createObjectStore('users', { keyPath: "id"})
+      let request = objectStore.get(id);
+      request.onerror = (event: any) => console.error("DB error: unable to retrieve data: " + event)
+      request.onsuccess = (event: any) => dispatch(addArticle(request.result))
+    }
+  },[id])
 
   useEffect(() => {
-    
-    async function initClient() {      
-      const googleAuth = await gapi.client.init({
-        apiKey: "XXXX",
-        client_id: "XXXX",
-        'scope': 'profile',
-      });
-      console.log(googleAuth)
-      googleAuth.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-      updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get())
-      if (loginRef.current !== null && logoutRef.current !== null) {
-        loginRef.current.onclick = handleAuthClick;
-        logoutRef.current.onclick = handleSignoutClick;
-      }
-      console.log(gapi);
-    }
-
     function updateSigninStatus(isSignedIn: any) {
       if (loginRef.current !== null && logoutRef !== null) {
         if (isSignedIn) {
           loginRef.current.style.display = 'none';
-          loginRef.current.style.display = 'block';
           makeApiCall();
         } else {
           loginRef.current.style.display = 'block';
-          loginRef.current.style.display = 'none';
         }
       }
     }
 
     function makeApiCall() {
       let gapi = window.gapi;
+      let id;
+      let data;
       gapi.client.people.people.get({
-          'resourceName': 'people/me',
-          'personFields': 'clientData'
+        'resourceName': 'people/me',
+        'personFields': 'clientData'
       }).then((response: any) => {
-          console.log(response.result);
+        id = response.result.resourceName.split('/')[1];
+        setUserId(id)
+        dispatch(addId(id))
       })
     }
 
     function handleAuthClick(event: any) {
+      let gapi = window.gapi;
       gapi.auth2.getAuthInstance().signIn();
     }
-  
+
     function handleSignoutClick(event: any) {
       let gapi = window.gapi;
       gapi.auth2.getAuthInstance().signOut();
@@ -133,24 +109,45 @@ const App: React.FC = () => {
     window.onGoogleScriptLoad = () => {
       const gapi = window.gapi;
       setGapi(gapi);
-      console.log(gapi);
+      async function initClient() {
+        if (gapi !== null) {
+          try {
+            gapi.client.init({
+              'apiKey': "XXX",
+              'clientId': "XXX",
+              'discoveryDocs': ["https://people.googleapis.com/$discovery/rest?version=v1"],
+              'scope': 'profile',
+            }).then(() => {
+              gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+              updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get())
+              if (loginRef.current !== null && logoutRef.current !== null) {
+                loginRef.current.onclick = handleAuthClick;
+                logoutRef.current.onclick = handleSignoutClick;
+              }
+            });
+          } catch (e) {
+            console.log(e)
+          }
+          console.log(gapi);
+        } else {
+          console.log("failed to initialize")
+        }
+      }
       gapi.load('client:auth2', initClient)
     };
 
     loadGoogleScript();
 
-  }, [gapi])
+  }, [gapi, dispatch, db])
 
 
   useEffect(() => {
     window.onscroll = _.debounce(async () => {
       let page = pageNumber
       if (error || isLoading) return;
-      console.log(page);
       console.log(Math.round(window.innerHeight), Math.round(document.documentElement.scrollTop), document.documentElement.offsetHeight)
       if (Math.round((window.innerHeight + document.documentElement.scrollTop) - 40) >= document.documentElement.offsetHeight) { //nav has fixed position and must be subtracted for equality
         page++
-        console.log("match")
         try {
           setIsLoading(true);
           let response: any = await searchWeb(searchWord, searchType, page);
@@ -195,7 +192,6 @@ const App: React.FC = () => {
   const renderCards = () => {
     let articles;
     if (responseData.length > 0) {
-      console.log(responseData)
       articles = responseData.map((result: any) => {
         let placeholder = "";
         result.image.url === "" ? placeholder = magnifySVG : placeholder = result.image.url;
@@ -206,7 +202,7 @@ const App: React.FC = () => {
           publishDate={result.datePublished}
           url={result.url}
           id={result.id}
-          children={<SaveButton resultData={result} />} />
+          children={<SaveButton resultData={result} db={db} />} />
       })
 
     } else {
@@ -219,7 +215,7 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <Title menuRef={sideBarRef} loginRef={loginRef} loggedIn={isLoggedIn}  name={name} email={email} signInWindowRef={signInWindowRef} />
+      <Title menuRef={sideBarRef} signInWindowRef={signInWindowRef} />
       <div className='content-container'>
         <Switch>
           <Route path="/" exact>
@@ -236,10 +232,10 @@ const App: React.FC = () => {
         </Switch>
         <SideBar menuRef={sideBarRef} />
         <ActionButton subMenu={subMenuRef} />
-        <Authorization gapi={gapi} logoutRef={logoutRef} loginRef={loginRef} signInWindowRef={signInWindowRef} logOut={logOut} loggedIn={isLoggedIn} name={name} email={email} imageUrl={imageUrl} />
+        <Authorization gapi={gapi} logoutRef={logoutRef} loginRef={loginRef} signInWindowRef={signInWindowRef} />
       </div>
     </div>
-  );
+  )
 }
 
 export default App;
