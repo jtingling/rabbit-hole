@@ -12,7 +12,7 @@ import ActionButton from './components/ActionButton';
 
 import { getQuery, getUrl } from './features/articles/searchSlice';
 import { addKeyword, IQueryData } from './features/history/historySlice';
-import { addId, selectAllArticles, addArticle } from './features/articles/articleSlice';
+import { addId } from './features/articles/articleSlice';
 
 import magnifySVG from './images/magnify-glass.svg';
 import SavedResults from './pages/SavedResults';
@@ -32,7 +32,6 @@ const App: React.FC = () => {
   const [pageNumber, setPageNumber] = useState<number>(1)
   const [gapi, setGapi] = useState<any>(null);
   const [ db, setDb ] = useState<any>(null);
-  const [ id, setUserId ] = useState<string>('');
 
   const sideBarRef = useRef<HTMLElement>(null);
   const signInWindowRef = useRef<HTMLDivElement>(null);
@@ -53,22 +52,22 @@ const App: React.FC = () => {
     let db: any;
     let request = window.indexedDB.open(dbName, 1);
     request.onerror = (event: any) => console.error("There has been an error: " + event)
-    request.onsuccess = (event: any) => {
+    request.onupgradeneeded = (event: any) => {
       db = event.target.result;
       console.log(db);
       setDb(db);
       console.log("DB initialized.")
+      let objectStore = db.createObjectStore('users', { autoIncrement: true})
+      objectStore.createIndex("articleId", 'articleId', {unique: false })
     }
-  },[])
+    request.onsuccess = (event: any) => {
+      db = event.target.result;
+      setDb(db);
+      console.log("DB initialized")
+    }
 
-  useEffect(()=>{
-    if (id !== '') {
-      let objectStore = db.createObjectStore('users', { keyPath: "id"})
-      let request = objectStore.get(id);
-      request.onerror = (event: any) => console.error("DB error: unable to retrieve data: " + event)
-      request.onsuccess = (event: any) => dispatch(addArticle(request.result))
-    }
-  },[id])
+
+  },[])
 
   useEffect(() => {
     function updateSigninStatus(isSignedIn: any) {
@@ -85,13 +84,11 @@ const App: React.FC = () => {
     function makeApiCall() {
       let gapi = window.gapi;
       let id;
-      let data;
       gapi.client.people.people.get({
         'resourceName': 'people/me',
         'personFields': 'clientData'
       }).then((response: any) => {
         id = response.result.resourceName.split('/')[1];
-        setUserId(id)
         dispatch(addId(id))
       })
     }
@@ -138,7 +135,7 @@ const App: React.FC = () => {
 
     loadGoogleScript();
 
-  }, [gapi, dispatch, db])
+  }, [gapi, dispatch])
 
 
   useEffect(() => {
@@ -180,6 +177,7 @@ const App: React.FC = () => {
         } catch (e) {
           setError(true);
           console.log(e);
+          setIsLoading(false);
         }
       }
     }
@@ -226,7 +224,7 @@ const App: React.FC = () => {
               <span style={displayRef}>Loading...</span>
             </div>
           </Route>
-          <Route path="/SavedResults" component={SavedResults} />
+          <Route path="/SavedResults" render={()=> <SavedResults db={db}/>}  />
           <Route path="/SearchHistory" component={PinnedQueries} />
 
         </Switch>

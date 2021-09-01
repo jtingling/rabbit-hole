@@ -8,9 +8,10 @@ import '../styles/animation.css'
 import Chips from './Chips'
 
 interface Props {
-    menuRef: React.MutableRefObject<HTMLElement | null>
+    menuRef: React.MutableRefObject<HTMLElement | null>,
+    signInWindowRef: React.MutableRefObject<HTMLElement | null>
 }
-const Title: React.FunctionComponent<Props> = ({ menuRef }) => {
+const Title: React.FunctionComponent<Props> = ({ menuRef, signInWindowRef }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchValue, setSearchValue] = useState("");
     const dispatch = useDispatch();
@@ -23,6 +24,18 @@ const Title: React.FunctionComponent<Props> = ({ menuRef }) => {
                 setIsOpen(false)
             } else {
                 element.current.style.width = "200px";
+                setIsOpen(true)
+            }
+        }
+    }
+
+    function toggleSignIn(element: React.MutableRefObject<HTMLElement | null>): void {
+        if (element.current !== null) {
+            if (isOpen) {
+                element.current.style.display = "none";
+                setIsOpen(false)
+            } else {
+                element.current.style.display = "block";
                 setIsOpen(true)
             }
         }
@@ -47,7 +60,7 @@ const Title: React.FunctionComponent<Props> = ({ menuRef }) => {
 
                     </div>
                 </div>
-                <button id="title-login" type='submit'>Log In</button>
+                <button id="title-login" type='button' onClick={()=>toggleSignIn(signInWindowRef)}>Log In</button>
             </div>
             <Chips />
         </>
