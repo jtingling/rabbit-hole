@@ -27,7 +27,7 @@ const Chips: React.FC = () => {
     }, [searchWord, searchUrl, dispatch, similarUrl])
 
     const renderChips = () => {
-        if (keywords.length > 0) {
+        if (keywords !== undefined) {
             return (
                 keywords.map((word, idx) => {
                     if (idx < 10) {
