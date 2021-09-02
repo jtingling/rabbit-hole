@@ -12,7 +12,7 @@ import ActionButton from './components/ActionButton';
 
 import { getQuery, getUrl } from './features/articles/searchSlice';
 import { addKeyword, IQueryData } from './features/history/historySlice';
-import { addId } from './features/articles/articleSlice';
+import { addId, addArticle } from './features/articles/articleSlice';
 
 import magnifySVG from './images/magnify-glass.svg';
 import SavedResults from './pages/SavedResults';
@@ -32,6 +32,7 @@ const App: React.FC = () => {
   const [pageNumber, setPageNumber] = useState<number>(1)
   const [gapi, setGapi] = useState<any>(null);
   const [ db, setDb ] = useState<any>(null);
+  const [ userId, setUserId ] = useState<any>(null);
 
   const sideBarRef = useRef<HTMLElement>(null);
   const signInWindowRef = useRef<HTMLDivElement>(null);
@@ -65,9 +66,21 @@ const App: React.FC = () => {
       setDb(db);
       console.log("DB initialized")
     }
-
-
   },[])
+
+  useEffect(()=>{
+    if (!!userId) {
+      let result = db.transaction('users', 'readonly').objectStore('users').getAll();
+      result.onerror = (e: any) => console.error("Failed to get articles: " + e);
+      result.onsuccess = (event: any) => {
+          event.target.result.map((record: any)=>{
+              if (record.userId === userId) {
+                  dispatch(addArticle(record));
+              }
+          })
+      }
+    }
+  },[userId])
 
   useEffect(() => {
     function updateSigninStatus(isSignedIn: any) {
@@ -90,6 +103,7 @@ const App: React.FC = () => {
       }).then((response: any) => {
         id = response.result.resourceName.split('/')[1];
         dispatch(addId(id))
+        setUserId(id);
       })
     }
 
@@ -110,8 +124,8 @@ const App: React.FC = () => {
         if (gapi !== null) {
           try {
             gapi.client.init({
-              'apiKey': "XXX",
-              'clientId': "XXX",
+              'apiKey': process.env.REACT_APP_GOOGLE_API,
+              'clientId': process.env.REACT_APP_GOOGLE_CLIEND_ID,
               'discoveryDocs': ["https://people.googleapis.com/$discovery/rest?version=v1"],
               'scope': 'profile',
             }).then(() => {
@@ -230,7 +244,7 @@ const App: React.FC = () => {
         </Switch>
         <SideBar menuRef={sideBarRef} />
         <ActionButton subMenu={subMenuRef} />
-        <Authorization gapi={gapi} logoutRef={logoutRef} loginRef={loginRef} signInWindowRef={signInWindowRef} />
+        <Authorization logoutRef={logoutRef} loginRef={loginRef} signInWindowRef={signInWindowRef} />
       </div>
     </div>
   )
