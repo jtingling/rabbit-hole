@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from '../store';
 
-export interface Articles {
+interface Articles {
     userId: string,
     articles: Article[]
 }
@@ -16,7 +16,7 @@ export interface Article {
     userId: string,
 }
 
-export const initialState: Articles = {
+const initialState: Articles = {
     userId: "",
     articles: []
 }

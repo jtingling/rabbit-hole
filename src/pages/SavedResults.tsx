@@ -14,7 +14,7 @@ const SavedResults: React.FC<{db: any}> = ({db}): JSX.Element => {
 
 
     return (
-        <div><></>
+        <div>
             {   
                 savedResults.articles.length > 0 ? savedResults.articles.map((result: any) => {
                     let placeholder = "";
@@ -25,7 +25,7 @@ const SavedResults: React.FC<{db: any}> = ({db}): JSX.Element => {
                         stub={result.stub} 
                         publishDate={result.publishDate} 
                         url={result.url} 
-                        id={result.id}
+                        articleId={result.articleId}
                         >
                             <DeleteButton articleId={result.articleId} db={db}/>
                         </Card>

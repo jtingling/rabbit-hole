@@ -3,16 +3,16 @@ import '../styles/layout.css'
 import TimeAgo from './TimeAgo'
 
 export interface Props {
-    id: string,
+    articleId: string,
     title: string;
     stub: string;
     image: string;
     publishDate: string;
     url: string;
 }
-const Card: React.FC<Props> = ({ title, stub, image, publishDate, id, url, children}) => {
+const Card: React.FC<Props> = ({ title, stub, image, publishDate, articleId, url, children}) => {
     return (
-        <article key={id}>
+        <article key={articleId}>
             <div>
                 <img src={image} alt={title}/>
                 <div>

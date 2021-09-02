@@ -5,7 +5,7 @@ var get: Method = "GET"
 var options: AxiosRequestConfig = {
     method: get,
     headers: {
-      'x-rapidapi-key': 'a60b62e006msh2beb199b0b9281ep1bb734jsnf31e6ce09e99',
+      'x-rapidapi-key': process.env.REACT_APP_RAPID_KEY,
       'x-rapidapi-host': 'keyword-analysis.p.rapidapi.com'
     }
   };

@@ -2,7 +2,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { searchWeb } from './adapters/webSearch'
 import { useDispatch, useSelector } from 'react-redux'
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import _ from 'lodash'
 
 import Card from './components/Card';
@@ -35,7 +35,7 @@ const App: React.FC = () => {
   const [ userId, setUserId ] = useState<any>(null);
 
   const sideBarRef = useRef<HTMLElement>(null);
-  const signInWindowRef = useRef<HTMLDivElement>(null);
+  
   const loginRef = useRef<HTMLButtonElement>(null);
   const logoutRef = useRef<HTMLButtonElement>(null)
   const subMenuRef = useRef<HTMLDivElement>(null);
@@ -84,15 +84,18 @@ const App: React.FC = () => {
 
   useEffect(() => {
     function updateSigninStatus(isSignedIn: any) {
-      if (loginRef.current !== null && logoutRef !== null) {
+      if (!!loginRef.current && !!logoutRef.current) {
         if (isSignedIn) {
           loginRef.current.style.display = 'none';
+          logoutRef.current.style.display = 'block';
           makeApiCall();
         } else {
           loginRef.current.style.display = 'block';
+          logoutRef.current.style.display = 'none'
         }
       }
     }
+    
 
     function makeApiCall() {
       let gapi = window.gapi;
@@ -115,6 +118,7 @@ const App: React.FC = () => {
     function handleSignoutClick(event: any) {
       let gapi = window.gapi;
       gapi.auth2.getAuthInstance().signOut();
+      setUserId(null)
     }
 
     window.onGoogleScriptLoad = () => {
@@ -156,7 +160,6 @@ const App: React.FC = () => {
     window.onscroll = _.debounce(async () => {
       let page = pageNumber
       if (error || isLoading) return;
-      console.log(Math.round(window.innerHeight), Math.round(document.documentElement.scrollTop), document.documentElement.offsetHeight)
       if (Math.round((window.innerHeight + document.documentElement.scrollTop) - 40) >= document.documentElement.offsetHeight) { //nav has fixed position and must be subtracted for equality
         page++
         try {
@@ -213,7 +216,7 @@ const App: React.FC = () => {
           stub={result.snippet}
           publishDate={result.datePublished}
           url={result.url}
-          id={result.id}
+          articleId={result.id}
           children={<SaveButton resultData={result} db={db} />} />
       })
 
@@ -227,7 +230,7 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <Title menuRef={sideBarRef} signInWindowRef={signInWindowRef} />
+      <Title menuRef={sideBarRef} loginRef={loginRef} logoutRef={logoutRef} />
       <div className='content-container'>
         <Switch>
           <Route path="/" exact>
@@ -238,13 +241,12 @@ const App: React.FC = () => {
               <span style={displayRef}>Loading...</span>
             </div>
           </Route>
-          <Route path="/SavedResults" render={()=> <SavedResults db={db}/>}  />
+          <Route path="/SavedResults" render={()=><SavedResults db={db}/>}  />
           <Route path="/SearchHistory" component={PinnedQueries} />
 
         </Switch>
         <SideBar menuRef={sideBarRef} />
         <ActionButton subMenu={subMenuRef} />
-        <Authorization logoutRef={logoutRef} loginRef={loginRef} signInWindowRef={signInWindowRef} />
       </div>
     </div>
   )

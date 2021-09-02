@@ -1,17 +1,22 @@
 import React from 'react';
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import Authorisation from './Authorisation';
 import { getQuery } from '../features/articles/searchSlice';
 import { updateQuery } from '../features/articles/searchSlice'
 import '../styles/layout.css'
 import '../styles/animation.css'
 import Chips from './Chips'
+import { useEffect } from 'react';
+
+declare const window: any;
 
 interface Props {
     menuRef: React.MutableRefObject<HTMLElement | null>,
-    signInWindowRef: React.MutableRefObject<HTMLElement | null>
+    loginRef: React.MutableRefObject<HTMLButtonElement | null>,
+    logoutRef: React.MutableRefObject<HTMLButtonElement | null>,
 }
-const Title: React.FunctionComponent<Props> = ({ menuRef, signInWindowRef }) => {
+const Title: React.FunctionComponent<Props> = ({ menuRef, loginRef, logoutRef }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchValue, setSearchValue] = useState("");
     const dispatch = useDispatch();
@@ -60,7 +65,7 @@ const Title: React.FunctionComponent<Props> = ({ menuRef, signInWindowRef }) => 
 
                     </div>
                 </div>
-                <button id="title-login" type='button' onClick={()=>toggleSignIn(signInWindowRef)}>Log In</button>
+                <Authorisation logoutRef={logoutRef} loginRef={loginRef} />
             </div>
             <Chips />
         </>
