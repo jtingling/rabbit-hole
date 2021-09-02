@@ -12,23 +12,6 @@ const SavedResults: React.FC<{db: any}> = ({db}): JSX.Element => {
     let savedResults = useSelector(selectAllArticles);
     let userId = useSelector(selectId)
 
-    useEffect(()=>{
-        if (userId) {
-            let result = db.transaction('users', 'readonly').objectStore('users').getAll();
-            result.onerror = (e: any) => console.error("Failed to get articles: " + e);
-            result.onsuccess = (event: any) => {
-                event.target.result.map((record: any)=>{
-                    console.log(record);
-                    if (record.userId === userId) {
-                        dispatch(addArticle(record));
-
-                    }
-                })
-                
-                console.log("Articles Loaded.")
-            }
-        }
-    },[])
 
     return (
         <div><></>
