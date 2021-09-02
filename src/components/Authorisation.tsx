@@ -1,33 +1,37 @@
-import React, { useEffect, useState } from 'react';
 
-type logOut = () => void;
+import React, { useEffect, useState, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
+
+declare const window: any;
 
 interface Props {
-    name: string,
-    email: string,
-    loggedIn: boolean,
-    imageUrl: string,
-    logOut: logOut,
     loginRef: React.MutableRefObject<HTMLButtonElement | null>
     logoutRef: React.MutableRefObject<HTMLButtonElement | null>
-    signInWindowRef: React.MutableRefObject<HTMLDivElement | null>
-    gapi: any,
 }
-const Authorization: React.FC<Props> = ({ loginRef, logoutRef, name, email, loggedIn, imageUrl, logOut, gapi, signInWindowRef }) => {
 
+const Authenticate: React.FC<Props> = ({loginRef, logoutRef}) => {
+    const [ gapi, setGapi ] = useState<any>(null)
 
-    useEffect(() => {
+    useEffect(()=>{
+        const gapi = window.gapi;
+        setGapi(gapi);
 
-    }, [])
+    },[])
+
     return (
-        <div className='authorization-container' ref={signInWindowRef} style={{ display: "none" }}>
-            <div className="App">
-                <header className="App-header">
-                    <button ref={loginRef} id="authorize-button" style={{display: "none"}}>Authorize</button>
-                    <button ref={logoutRef} id="signout-button" style={{display: "none"}}>Sign Out</button>
-                </header>
-            </div>
+        <div className='authorization-container'>
+        <div className="App">
+            <header className="App-header">
+                    <button ref={logoutRef} id="signout-button">Sign Out</button>
+                    <button ref={loginRef} id="authorize-button" >Authorize</button>
+            </header>
         </div>
+    </div>
+    )
+}
+const Authorization: React.FC<Props> = ({ loginRef, logoutRef }) => {
+    return (
+        <Authenticate loginRef={loginRef} logoutRef={logoutRef}/>
     )
 }
 

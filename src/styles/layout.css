@@ -213,6 +213,19 @@ ul li {
     margin: inherit;
     height: inherit;
 }
+/*Authorization.tsx*/
+.authorization-container {
+    position: absolute;
+    width: 75px;
+    height: 50px;
+    right: 10px;
+    top: 20px;
+}
+
+#authorize-button, #signout-button {
+    width: 75px;
+    height: 50px;
+}
 
 @media only screen and (max-width: 768px) {
     .title-search {

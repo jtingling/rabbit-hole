@@ -1,16 +1,23 @@
-import React from 'react';
-import { useSelector } from "react-redux";
-import { selectAllArticles } from '../features/articles/articleSlice';
+
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 import Card from '../components/Card';
 import magnifySVG from '../images/magnify-glass.svg';
 import DeleteButton from '../components/DeleteButton';
+import { useEffect } from 'react';
+import { selectId, Article, setArticles, addArticle, selectAllArticles } from '../features/articles/articleSlice';
 
-const SavedResults: React.FC = (): JSX.Element => {
+const SavedResults: React.FC<{db: any}> = ({db}): JSX.Element => {
+    const dispatch = useDispatch();
+    const [ resultsDb, setResultsDb ] = useState(null);
     let savedResults = useSelector(selectAllArticles);
+    let userId = useSelector(selectId)
+
+
     return (
-        <div><></>
+        <div>
             {   
-                savedResults.articles.map((result: any) => {
+                savedResults.articles.length > 0 ? savedResults.articles.map((result: any) => {
                     let placeholder = "";
                     result.image.url === "" ? placeholder = magnifySVG : placeholder = result.image.url;
                     return <Card 
@@ -19,11 +26,11 @@ const SavedResults: React.FC = (): JSX.Element => {
                         stub={result.stub} 
                         publishDate={result.publishDate} 
                         url={result.url} 
-                        id={result.id}
+                        articleId={result.articleId}
                         >
-                            <DeleteButton id={result.id}/>
+                            <DeleteButton articleId={result.articleId} db={db}/>
                         </Card>
-                  })
+                  }) : <p>No saved articles.</p>
             }
         </div>
 
