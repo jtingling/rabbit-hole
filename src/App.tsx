@@ -1,8 +1,7 @@
-
 import { useEffect, useState, useRef } from 'react'
 import { searchWeb } from './adapters/webSearch'
 import { useDispatch, useSelector } from 'react-redux'
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import _ from 'lodash'
 
 import Card from './components/Card';
@@ -12,14 +11,13 @@ import ActionButton from './components/ActionButton';
 
 import { getQuery, getUrl } from './features/articles/searchSlice';
 import { addKeyword, IQueryData } from './features/history/historySlice';
-import { addId, addArticle } from './features/articles/articleSlice';
+import { addArticle, setArticles } from './features/articles/articleSlice';
 
 import magnifySVG from './images/magnify-glass.svg';
 import SavedResults from './pages/SavedResults';
 import PinnedQueries from './pages/PinnedQueries';
 import SaveButton from './components/SaveButton';
 
-import Authorization from './components/Authorisation';
 import { loadGoogleScript } from './scripts/googleAuth';
 
 declare const window: any;
@@ -35,7 +33,6 @@ const App: React.FC = () => {
   const [ userId, setUserId ] = useState<any>(null);
 
   const sideBarRef = useRef<HTMLElement>(null);
-  
   const loginRef = useRef<HTMLButtonElement>(null);
   const logoutRef = useRef<HTMLButtonElement>(null)
   const subMenuRef = useRef<HTMLDivElement>(null);
@@ -45,6 +42,7 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
   const searchWord = useSelector(getQuery);
   const searchType = useSelector(getUrl);
+  
 
   const displayRef = { display: isLoading ? "block" : "none" }
 
@@ -73,14 +71,14 @@ const App: React.FC = () => {
       let result = db.transaction('users', 'readonly').objectStore('users').getAll();
       result.onerror = (e: any) => console.error("Failed to get articles: " + e);
       result.onsuccess = (event: any) => {
-          event.target.result.map((record: any)=>{
+          event.target.result.forEach((record: any)=>{
               if (record.userId === userId) {
                   dispatch(addArticle(record));
               }
           })
       }
     }
-  },[userId])
+  },[userId, db, dispatch])
 
   useEffect(() => {
     function updateSigninStatus(isSignedIn: any) {
@@ -92,6 +90,8 @@ const App: React.FC = () => {
         } else {
           loginRef.current.style.display = 'block';
           logoutRef.current.style.display = 'none'
+          setUserId(null)
+          dispatch(setArticles([]))
         }
       }
     }
@@ -105,7 +105,6 @@ const App: React.FC = () => {
         'personFields': 'clientData'
       }).then((response: any) => {
         id = response.result.resourceName.split('/')[1];
-        dispatch(addId(id))
         setUserId(id);
       })
     }
@@ -118,7 +117,6 @@ const App: React.FC = () => {
     function handleSignoutClick(event: any) {
       let gapi = window.gapi;
       gapi.auth2.getAuthInstance().signOut();
-      setUserId(null)
     }
 
     window.onGoogleScriptLoad = () => {
@@ -217,7 +215,7 @@ const App: React.FC = () => {
           publishDate={result.datePublished}
           url={result.url}
           articleId={result.id}
-          children={<SaveButton resultData={result} db={db} />} />
+          children={<SaveButton resultData={result} db={db} userId={userId} />} />
       })
 
     } else {
@@ -241,7 +239,7 @@ const App: React.FC = () => {
               <span style={displayRef}>Loading...</span>
             </div>
           </Route>
-          <Route path="/SavedResults" render={()=><SavedResults db={db}/>}  />
+          <Route path="/SavedResults" render={()=><SavedResults db={db} userId={userId} gapi={gapi}/>}  />
           <Route path="/SearchHistory" component={PinnedQueries} />
 
         </Switch>
