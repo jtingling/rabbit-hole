@@ -1,8 +1,6 @@
+import React from 'react';
+import { Link } from 'react-router-dom'
 
-import React, { useEffect, useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux'
-
-declare const window: any;
 
 interface Props {
     loginRef: React.MutableRefObject<HTMLButtonElement | null>
@@ -10,20 +8,13 @@ interface Props {
 }
 
 const Authenticate: React.FC<Props> = ({loginRef, logoutRef}) => {
-    const [ gapi, setGapi ] = useState<any>(null)
-
-    useEffect(()=>{
-        const gapi = window.gapi;
-        setGapi(gapi);
-
-    },[])
 
     return (
         <div className='authorization-container'>
         <div className="App">
             <header className="App-header">
-                    <button ref={logoutRef} id="signout-button">Sign Out</button>
-                    <button ref={loginRef} id="authorize-button" >Authorize</button>
+                    <button ref={logoutRef} id="signout-button"><Link to="/">Sign Out</Link></button>
+                    <button ref={loginRef} id="authorize-button"><Link to="/">Authorize</Link></button>
             </header>
         </div>
     </div>
