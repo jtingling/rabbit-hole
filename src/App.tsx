@@ -239,7 +239,7 @@ const App: React.FC = () => {
               <span style={displayRef}>Loading...</span>
             </div>
           </Route>
-          <Route path="/SavedResults" render={()=><SavedResults db={db} userId={userId} gapi={gapi}/>}  />
+          <Route path="/SavedResults" render={()=><SavedResults db={db} userId={userId}/>}  />
           <Route path="/SearchHistory" component={PinnedQueries} />
 
         </Switch>

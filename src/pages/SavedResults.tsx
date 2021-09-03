@@ -1,22 +1,37 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect, useRef } from 'react';
+import { useSelector } from "react-redux";
 import Card from '../components/Card';
 import magnifySVG from '../images/magnify-glass.svg';
 import DeleteButton from '../components/DeleteButton';
-import { useEffect } from 'react';
-import { selectId, Article, setArticles, addArticle, selectAllArticles } from '../features/articles/articleSlice';
+import { selectAllArticles } from '../features/articles/articleSlice';
 
-const SavedResults: React.FC<{db: any}> = ({db}): JSX.Element => {
-    const dispatch = useDispatch();
-    const [ resultsDb, setResultsDb ] = useState(null);
+declare const window: any;
+
+const SavedResults: React.FC<{db: any, userId: string}> = ({db, userId }): JSX.Element => {
     let savedResults = useSelector(selectAllArticles);
-    let userId = useSelector(selectId)
+    let statusRef = useRef<HTMLParagraphElement | null>(null);
+    if (!!statusRef.current) {
+        statusRef.current.innerText = "Make a search"
+    }
+    useEffect(()=>{
+        const gapi = window.gapi;
+        if(!!gapi && !!statusRef.current) {
+            console.log(gapi);
+            if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+                if (savedResults.articles.length === 0) {
+                    statusRef.current.innerText = "No saved articles"
+                }
+            } else {
+                statusRef.current.innerText = "Make a search to save articles"
+            }
+        }
+    },[savedResults.articles])
 
 
     return (
         <div>
             {   
-                savedResults.articles.length > 0 ? savedResults.articles.map((result: any) => {
+                savedResults.articles.map((result: any) => {
                     let placeholder = "";
                     result.image.url === "" ? placeholder = magnifySVG : placeholder = result.image.url;
                     return <Card 
@@ -27,10 +42,11 @@ const SavedResults: React.FC<{db: any}> = ({db}): JSX.Element => {
                         url={result.url} 
                         articleId={result.articleId}
                         >
-                            <DeleteButton articleId={result.articleId} db={db}/>
+                            <DeleteButton articleId={result.articleId} db={db} userId={userId}/>
                         </Card>
-                  }) : <p>No saved articles.</p>
+                  })
             }
+            <p ref={statusRef} id="status-text"></p>
         </div>
 
     )
