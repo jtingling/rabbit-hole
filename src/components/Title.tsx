@@ -7,9 +7,6 @@ import { updateQuery } from '../features/articles/searchSlice'
 import '../styles/layout.css'
 import '../styles/animation.css'
 import Chips from './Chips'
-import { useEffect } from 'react';
-
-declare const window: any;
 
 interface Props {
     menuRef: React.MutableRefObject<HTMLElement | null>,
@@ -29,18 +26,6 @@ const Title: React.FunctionComponent<Props> = ({ menuRef, loginRef, logoutRef })
                 setIsOpen(false)
             } else {
                 element.current.style.width = "200px";
-                setIsOpen(true)
-            }
-        }
-    }
-
-    function toggleSignIn(element: React.MutableRefObject<HTMLElement | null>): void {
-        if (element.current !== null) {
-            if (isOpen) {
-                element.current.style.display = "none";
-                setIsOpen(false)
-            } else {
-                element.current.style.display = "block";
                 setIsOpen(true)
             }
         }

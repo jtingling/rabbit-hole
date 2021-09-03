@@ -1,14 +1,11 @@
-  
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { addArticle, selectId, Article } from "../features/articles/articleSlice";
-import { useSelector } from "react-redux";
+import { addArticle, Article } from "../features/articles/articleSlice";
 
-const SaveButton: React.FC<any> = ({resultData, db}) => {
+const SaveButton: React.FC<any> = ({resultData, db, userId}) => {
     const [isSaved, setIsSaved] = useState<boolean | null>(false);
     const dispatch = useDispatch();
-    const userId = useSelector(selectId);
 
     const article: Article = {
         articleId: resultData.id,
