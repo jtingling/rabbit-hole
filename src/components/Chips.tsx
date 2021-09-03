@@ -24,7 +24,7 @@ const Chips: React.FC = () => {
                 console.log(e)
             }
         })()
-    }, [searchWord, searchUrl, dispatch, similarUrl])
+    }, [searchWord, searchUrl, similarUrl])
 
     const renderChips = () => {
         if (keywords !== undefined) {

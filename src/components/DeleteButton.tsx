@@ -1,18 +1,17 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useEffect, useState } from 'react';
-import { removeArticle, selectId } from "../features/articles/articleSlice";
+import { removeArticle } from "../features/articles/articleSlice";
 
-const DeleteButton: React.FC<any> = ({articleId, db}) => {
+const DeleteButton: React.FC<{articleId: any, db:any, userId: string}> = ({articleId, db, userId}) => {
 
     const [isDeleted, setIsDeleted] = useState(false);
     const dispatch = useDispatch();
-    const userId = useSelector(selectId);
     function deleteArticle () {
         if (db && !!userId) {
             let objectStore = db.transaction('users', 'readwrite')
             let result = objectStore.objectStore('users').index('articleId')
             result.getAll().onsuccess = (event: any) => {
-                event.target.result.map((record: any)=>{
+                event.target.result.forEach((record: any)=>{
                     if (record.userId === userId && record.articleId === articleId) {
                         let request = objectStore.objectStore('users').index("articleId").getKey(articleId)
                         console.log(request);
