@@ -158,7 +158,7 @@ const App: React.FC = () => {
     window.onscroll = _.debounce(async () => {
       let page = pageNumber
       if (error || isLoading) return;
-      if (Math.round((window.innerHeight + document.documentElement.scrollTop) - 40) >= document.documentElement.offsetHeight) { //nav has fixed position and must be subtracted for equality
+      if (Math.round((window.innerHeight + document.documentElement.scrollTop)) >= document.documentElement.offsetHeight) { //nav has fixed position and must be subtracted for equality
         page++
         try {
           setIsLoading(true);
@@ -204,6 +204,7 @@ const App: React.FC = () => {
 
   const renderCards = () => {
     let articles;
+    console.log(responseData);
     if (responseData.length > 0) {
       articles = responseData.map((result: any) => {
         let placeholder = "";
@@ -211,7 +212,7 @@ const App: React.FC = () => {
         return <Card
           image={placeholder}
           title={result.title}
-          stub={result.snippet}
+          stub={result.description}
           publishDate={result.datePublished}
           url={result.url}
           articleId={result.id}

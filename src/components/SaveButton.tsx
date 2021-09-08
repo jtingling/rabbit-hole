@@ -11,7 +11,7 @@ const SaveButton: React.FC<any> = ({resultData, db, userId}) => {
         articleId: resultData.id,
         image: resultData.image,
         title: resultData.title,
-        stub: resultData.snippet,
+        stub: resultData.description,
         url: resultData.url,
         publishDate: resultData.datePublished,
         userId: userId
