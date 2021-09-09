@@ -1,0 +1,94 @@
+.toggle-switch {
+	position: relative;
+	width: 90px;
+	display: inline-block;
+	vertical-align: middle;
+	text-align: left;
+	top: 40%;
+	left: 25%;
+}
+
+.toggle-switch-checkbox {
+	display: none;
+}
+
+.toggle-switch-label {
+	display: block;
+	overflow: hidden;
+	cursor: pointer;
+	border: 0 solid #bbb;
+	border-radius: 20px;
+	margin: 0;
+    background-color: #bbb;
+}
+
+.toggle-switch-inner {
+	display: block;
+	width: 200%;
+	margin-left: -60%;
+	transition: margin 0.3s ease-in 0s;
+}
+
+.toggle-switch-inner:before, .toggle-switch-inner:after {
+	display: block;
+	float: left;
+	width: 50%;
+	height: 34px;
+	padding: 0;
+	line-height: 34px;
+	font-size: 14px;
+	color: white;
+	font-weight: bold;
+	box-sizing: border-box;
+}
+
+.toggle-switch-inner:before {
+	content: "Web";
+	text-transform: uppercase;
+	padding-left: 20px;
+	background-color: #f90;
+	color: #fff;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.toggle-switch-disabled {
+	background-color: #ddd;
+	cursor: not-allowed;
+}
+
+.toggle-switch-disabled:before {
+	background-color: #ddd;
+	cursor: not-allowed;
+}
+
+.toggle-switch-inner:after {
+	content: "News";
+	text-transform: uppercase;
+	padding-right: 45px;
+	background-color: #bbb;
+	color: #fff;
+	text-align: right;
+}
+
+.toggle-switch-switch {
+	display: block;
+	width: 24px;
+	margin: 5px;
+	background: #fff;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 55px;
+	border: 0 solid #bbb;
+	border-radius: 20px;
+	transition: all 0.3s ease-in 0s;
+}
+
+.toggle-switch-checkbox:checked + .toggle-switch-label .toggle-switch-inner {
+	margin-left: 0;
+}
+
+.toggle-switch-checkbox:checked + .toggle-switch-label .toggle-switch-switch {
+	right: 0px;
+}

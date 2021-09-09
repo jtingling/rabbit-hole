@@ -7,7 +7,7 @@ import _ from 'lodash'
 import Card from './components/Card';
 import Title from './components/Title';
 import SideBar from './components/SideBar'
-import ActionButton from './components/ActionButton';
+
 
 import { getQuery, getUrl } from './features/articles/searchSlice';
 import { addKeyword, IQueryData } from './features/history/historySlice';
@@ -204,7 +204,6 @@ const App: React.FC = () => {
 
   const renderCards = () => {
     let articles;
-    console.log(responseData);
     if (responseData.length > 0) {
       articles = responseData.map((result: any) => {
         let placeholder = "";
@@ -236,16 +235,13 @@ const App: React.FC = () => {
             <div className='card-container' ref={cardContainerRef}>
               {renderCards()}
             </div>
-            <div ref={loadingRef} className="loading">
-              <span style={displayRef}>Loading...</span>
-            </div>
           </Route>
           <Route path="/SavedResults" render={()=><SavedResults db={db} userId={userId}/>}  />
           <Route path="/SearchHistory" component={PinnedQueries} />
 
         </Switch>
-        <SideBar menuRef={sideBarRef} />
-        <ActionButton subMenu={subMenuRef} />
+        <SideBar menuRef={sideBarRef} subMenuRef={subMenuRef} />
+        
       </div>
     </div>
   )

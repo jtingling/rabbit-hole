@@ -1,6 +1,4 @@
 import React, { useEffect, useRef } from 'react'
-import '../styles/layout.css'
-import '../styles/colors.css'
 import TimeAgo from './TimeAgo'
 
 export interface Props {
