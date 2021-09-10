@@ -6,7 +6,8 @@ import _ from 'lodash'
 
 import Card from './components/Card';
 import Title from './components/Title';
-import SideBar from './components/SideBar'
+import SideBar from './components/SideBar';
+import Loading from './components/Loading';
 
 
 import { getQuery, getUrl } from './features/articles/searchSlice';
@@ -29,8 +30,8 @@ const App: React.FC = () => {
   const [error, setError] = useState<boolean>(false);
   const [pageNumber, setPageNumber] = useState<number>(1)
   const [gapi, setGapi] = useState<any>(null);
-  const [ db, setDb ] = useState<any>(null);
-  const [ userId, setUserId ] = useState<any>(null);
+  const [db, setDb] = useState<any>(null);
+  const [userId, setUserId] = useState<any>(null);
 
   const sideBarRef = useRef<HTMLElement>(null);
   const loginRef = useRef<HTMLButtonElement>(null);
@@ -42,11 +43,9 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
   const searchWord = useSelector(getQuery);
   const searchType = useSelector(getUrl);
-  
 
-  const displayRef = { display: isLoading ? "block" : "none" }
 
-  useEffect(()=>{
+  useEffect(() => {
     const dbName = 'articles';
     let db: any;
     let request = window.indexedDB.open(dbName, 1);
@@ -56,29 +55,29 @@ const App: React.FC = () => {
       console.log(db);
       setDb(db);
       console.log("DB initialized.")
-      let objectStore = db.createObjectStore('users', { autoIncrement: true})
-      objectStore.createIndex("articleId", 'articleId', {unique: false })
+      let objectStore = db.createObjectStore('users', { autoIncrement: true })
+      objectStore.createIndex("articleId", 'articleId', { unique: false })
     }
     request.onsuccess = (event: any) => {
       db = event.target.result;
       setDb(db);
       console.log("DB initialized")
     }
-  },[])
+  }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     if (!!userId) {
       let result = db.transaction('users', 'readonly').objectStore('users').getAll();
       result.onerror = (e: any) => console.error("Failed to get articles: " + e);
       result.onsuccess = (event: any) => {
-          event.target.result.forEach((record: any)=>{
-              if (record.userId === userId) {
-                  dispatch(addArticle(record));
-              }
-          })
+        event.target.result.forEach((record: any) => {
+          if (record.userId === userId) {
+            dispatch(addArticle(record));
+          }
+        })
       }
     }
-  },[userId, db, dispatch])
+  }, [userId, db, dispatch])
 
   useEffect(() => {
     function updateSigninStatus(isSignedIn: any) {
@@ -95,7 +94,7 @@ const App: React.FC = () => {
         }
       }
     }
-    
+
 
     function makeApiCall() {
       let gapi = window.gapi;
@@ -141,7 +140,6 @@ const App: React.FC = () => {
           } catch (e) {
             console.log(e)
           }
-          console.log(gapi);
         } else {
           console.log("failed to initialize")
         }
@@ -162,6 +160,7 @@ const App: React.FC = () => {
         page++
         try {
           setIsLoading(true);
+          window.scrollBy(0, window.innerHeight)
           let response: any = await searchWeb(searchWord, searchType, page);
           setResponseData([...responseData, ...response.data.value])
           setPageNumber(page);
@@ -220,7 +219,7 @@ const App: React.FC = () => {
 
     } else {
       return (
-        <h5>Search results are shown here.</h5>
+        <></>
       )
     }
     return articles;
@@ -234,9 +233,10 @@ const App: React.FC = () => {
           <Route path="/" exact>
             <div className='card-container' ref={cardContainerRef}>
               {renderCards()}
+              <Loading loadingStatus={isLoading}/>
             </div>
           </Route>
-          <Route path="/SavedResults" render={()=><SavedResults db={db} userId={userId}/>}  />
+          <Route path="/SavedResults" render={() => <SavedResults db={db} userId={userId} />} />
           <Route path="/SearchHistory" component={PinnedQueries} />
 
         </Switch>
