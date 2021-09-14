@@ -14,7 +14,6 @@ import { getQuery, getUrl } from './features/articles/searchSlice';
 import { addKeyword, IQueryData } from './features/history/historySlice';
 import { addArticle, setArticles } from './features/articles/articleSlice';
 
-import magnifySVG from './images/magnify-glass.svg';
 import SavedResults from './pages/SavedResults';
 import PinnedQueries from './pages/PinnedQueries';
 import SaveButton from './components/SaveButton';
@@ -38,7 +37,6 @@ const App: React.FC = () => {
   const logoutRef = useRef<HTMLButtonElement>(null)
   const subMenuRef = useRef<HTMLDivElement>(null);
   const cardContainerRef = useRef<any>(null);
-  const loadingRef = useRef<any>(null);
 
   const dispatch = useDispatch();
   const searchWord = useSelector(getQuery);
@@ -201,14 +199,13 @@ const App: React.FC = () => {
     window.scrollTo(0, 0);
   }, [searchWord, searchType, dispatch])
 
+
   const renderCards = () => {
     let articles;
     if (responseData.length > 0) {
       articles = responseData.map((result: any) => {
-        let placeholder = "";
-        result.image.url === "" ? placeholder = magnifySVG : placeholder = result.image.url;
         return <Card
-          image={placeholder}
+          image={result.image.url}
           title={result.title}
           stub={result.description}
           publishDate={result.datePublished}
@@ -216,7 +213,6 @@ const App: React.FC = () => {
           articleId={result.id}
           children={<SaveButton resultData={result} db={db} userId={userId} />} />
       })
-
     } else {
       return (
         <></>
@@ -224,6 +220,7 @@ const App: React.FC = () => {
     }
     return articles;
   }
+
 
   return (
     <div>
@@ -236,7 +233,7 @@ const App: React.FC = () => {
               <Loading loadingStatus={isLoading}/>
             </div>
           </Route>
-          <Route path="/SavedResults" render={() => <SavedResults db={db} userId={userId} />} />
+          <Route path="/SavedResults" render={() => <SavedResults db={db} userId={userId}/>} />
           <Route path="/SearchHistory" component={PinnedQueries} />
 
         </Switch>

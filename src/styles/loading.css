@@ -1,13 +1,13 @@
 /*Loading.tsx*/
 .result-load-container {
-    max-width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     margin: 0 auto;
-    z-index: 20;
+    z-index: 21;
 }
-
 .loading-gif {
     position: relative;
     left: 50%;
-    z-index: 20;
-    bottom: 95%;
 }

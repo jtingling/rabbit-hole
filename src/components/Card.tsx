@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, {  useRef } from 'react'
 import TimeAgo from './TimeAgo'
 
 export interface Props {
@@ -8,20 +8,32 @@ export interface Props {
     image: string;
     publishDate: string;
     url: string;
+
 }
 const Card: React.FC<Props> = ({ title, stub, image, publishDate, articleId, url, children }) => {
-    let titleRef = useRef<HTMLHeadingElement | null>(null)
-
+    const imgRef = useRef<HTMLImageElement>(document.createElement('img'))
+    const titleRef = useRef<HTMLHeadingElement>(document.createElement('h4'))
+    const pRef = useRef<HTMLParagraphElement>(document.createElement('p'))
+  
+    const handleError = () => {
+        console.log(imgRef.current.src)
+        imgRef.current.style.display = 'none';
+        titleRef.current.style.textAlign = 'left';
+        pRef.current.style.width = '99%';
+        pRef.current.style.margin = '0 auto';
+        
+    }
+    
     return (
-        <article key={articleId} className='article-container'>
+        <article key={articleId} className='article-container' >
             <div className='article-body'>
-                <img src={image} alt={title} />
+                <img src={image} alt={title} onError={handleError} ref={imgRef}/>
                 <div className='animate-container'>
                     <h4 ref={titleRef}><a href={url} target="_blank" rel="noreferrer">{title}</a></h4>
                     <TimeAgo timestamp={publishDate} published={"Published "} />
                     <p>{stub}</p>
                 </div>
-                <p className='card-children-container'>
+                <p ref={pRef} className='card-children-container'>
                         {children}
                     </p>
             </div>

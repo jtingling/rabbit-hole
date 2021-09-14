@@ -16,8 +16,8 @@
 
 .title-ribbon > button {
     position: absolute;
+    height: 50px;
     width: 75px;
-    height: 50px
 }
 
 .title-search {
@@ -93,16 +93,16 @@ article div img {
 
 .animate-container {
     position: relative;
-    z-index: auto;
+    z-index: 21;
     top: 0px;
     left: 10px;
     width: 98%;
-    max-height: 150px;
+    height: 150px;
 }
 
 h4 {
     left: 0px;
-    height: 50px;
+    height: 25%;
     overflow-y:hidden;
     text-overflow: ellipsis;
     margin-bottom: 0px;
@@ -111,32 +111,37 @@ a {
     text-overflow: ellipsis;
 }
 
-span {
-    position: relative;
-    z-index: auto;
-    top: 0px;
-    left: -5px;
-}
-
 p {
-    position: relative;
-    height: 85px;
     overflow-y: auto;
-    margin: 0px;
+    height: 70px;
+    margin-bottom: 0px;
+    margin-top: 0px;
 }
 
-
-.card-children-container button {
+.card-children-container {
     position: relative;
-    bottom: -15px;
-    width: 98%;
-    z-index: auto;
-    left: 4px;
+    height: auto;
+    margin-left: 35%;
+    margin-top: 2%;
+    padding-right: 5px;
+    z-index: 20;
 }
+.card-children-container button {
+    width: 100%;
 
-/*HistoryCard.tsx*/
+}
+.time-ago {
+    display: inline-block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+/*SearchHistory.tsx*/
 .history-card-container {
-    
+    margin: 0;
+}
+.history-card-container li {
+    text-align: left;
+    padding: 5px;
 }
 /*SideBar.tsx*/
 aside {
@@ -160,67 +165,17 @@ ul li {
     text-align: center;
     transition: 0.5s;
     overflow-x: hidden;
-    padding: 20px 0px;
+    padding: 30px 0px;
     list-style: none;
 }
-
-/*ActionButton.tsx*/
-.button-container {
-    position: fixed;
-    max-width: 100%;
-    height: calc(((75px) * 3) + 20px);
-    right: 0;
-    bottom: 0;
-}
-
-.action-button {
-    position: absolute;
-    bottom: 0;
-    right: 10px;
-    width: 75px;
-    height: 75px;
-}
-.subMenu-buttons {
+.settings {
     position: relative;
-    overflow: hidden;
-    right: 10px;
-    bottom: 0px;
-    width: 75px;
-    height: 0px;
-    margin-left: auto;
-    transition: bottom;
+    text-align: center;
+    top: 40%;
 }
 
-.subMenu-buttons button {
-    width: 75px;
-    height: 75px;
-}
-.subMenu-buttons #web {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-}
-.subMenu-buttons #news {
-    position: absolute;
-    bottom: calc(75px + 10px);
-    right: 0;
-}
 /*App.tsx*/
 
-.loading {
-    position: fixed;
-    bottom: 0px;
-    left: 0px;
-    height: 100px;
-    width: 100%;
-}
-.loading span {
-    width: 50%;
-    margin: 0 auto;
-    text-align: center;
-    background-color: lightsalmon;
-    z-index: 3;
-}
 .content-container {
     position: relative;
     max-width: 600px;
@@ -250,6 +205,7 @@ ul li {
     height: 50px;
 }
 
+
 @media only screen and (max-width: 768px) {
     .title-search {
         text-align: center;
@@ -262,14 +218,23 @@ ul li {
     }
 }
 @media only screen and (max-width: 768px) {
-article {
-    width: 350px;
-}
-article div img {
-    float: left;
-    width: 100px;
-    height: 100px;
-}
-
+    .article-container {
+        width: 350px;
+    }
+    article div img {
+        float: left;
+        width: 100px;
+        height: 100px;
+    }
+    p {
+        height: 50px;
+    }
+    .card-children-container {
+        position: relative;
+        width: 100%;
+        height: 85px;
+        top: 25%;
+        overflow-y: scroll;
+    }
 }
 

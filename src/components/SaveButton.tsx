@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addArticle, Article } from "../features/articles/articleSlice";
@@ -11,7 +11,7 @@ const SaveButton: React.FC<any> = ({resultData, db, userId}) => {
         articleId: resultData.id,
         image: resultData.image,
         title: resultData.title,
-        stub: resultData.description,
+        stub: resultData,
         url: resultData.url,
         publishDate: resultData.datePublished,
         userId: userId
