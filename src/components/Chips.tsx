@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import '../styles/layout.css'
+import '../styles/colors.css'
 import { querySearch, searchWeb } from '../adapters';
 import { getQuery, getSimilarUrl, getUrl, updateQuery } from '../features/articles/searchSlice';
 

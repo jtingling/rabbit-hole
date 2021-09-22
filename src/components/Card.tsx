@@ -16,7 +16,6 @@ const Card: React.FC<Props> = ({ title, stub, image, publishDate, articleId, url
     const pRef = useRef<HTMLParagraphElement>(document.createElement('p'))
   
     const handleError = () => {
-        console.log(imgRef.current.src)
         imgRef.current.style.display = 'none';
         titleRef.current.style.textAlign = 'left';
         pRef.current.style.width = '99%';
@@ -29,7 +28,7 @@ const Card: React.FC<Props> = ({ title, stub, image, publishDate, articleId, url
             <div className='article-body'>
                 <img src={image} alt={title} onError={handleError} ref={imgRef}/>
                 <div className='animate-container'>
-                    <h4 ref={titleRef}><a href={url} target="_blank" rel="noreferrer">{title}</a></h4>
+                    <h4 ref={titleRef} title={title}><a href={url} target="_blank" rel="noreferrer">{title}</a></h4>
                     <TimeAgo timestamp={publishDate} published={"Published "} />
                     <p>{stub}</p>
                 </div>

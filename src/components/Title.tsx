@@ -5,7 +5,8 @@ import Authorisation from './Authorisation';
 import { getQuery } from '../features/articles/searchSlice';
 import { updateQuery } from '../features/articles/searchSlice'
 import '../styles/layout.css'
-import '../styles/animation.css'
+import '../styles/colors.css'
+import menuIcon from '../images/icons8-menu.svg'
 import Chips from './Chips'
 
 interface Props {
@@ -34,7 +35,7 @@ const Title: React.FunctionComponent<Props> = ({ menuRef, loginRef, logoutRef })
     return (
         <> 
             <div className="title-ribbon">
-                <button id="title-menu" type='button' onClick={() => toggleMenu(menuRef)}>menu</button>
+                <img id="title-menu" alt='menu' src={menuIcon} onClick={() => toggleMenu(menuRef)}/>
                 <div className="title-layout">
                     <h1>Rabbit Hole</h1>
                     <div className='title-search'>

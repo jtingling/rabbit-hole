@@ -13,7 +13,7 @@ const Authenticate: React.FC<Props> = ({loginRef, logoutRef}) => {
         <div className='authorization-container'>
         <div className="App">
             <header className="App-header">
-                    <button ref={logoutRef} id="signout-button"><Link to="/">Sign Out</Link></button>
+                    <button ref={logoutRef} id="signout-button" style={{display: "none"}}><Link to="/">Sign Out</Link></button>
                     <button ref={loginRef} id="authorize-button"><Link to="/">Authorize</Link></button>
             </header>
         </div>

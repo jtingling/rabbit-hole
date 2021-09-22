@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { ChangeEvent } from 'react';
 import { updateUrl } from '../features/articles/searchSlice';
 import { useDispatch } from 'react-redux';
 
@@ -17,6 +17,7 @@ const ToggleSwitch: React.FC<Props> = ({ name, id, checked, onChange }) => {
     } else {
         dispatch(updateUrl('https://contextualwebsearch-websearch-v1.p.rapidapi.com/api/search/NewsSearchAPI'));
     }
+
     return (
         <div className="toggle-switch">
             <input

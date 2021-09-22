@@ -12,13 +12,12 @@ const TimeAgo: React.FC<Time> = ({timestamp, published}) => {
     if(timestamp) {
         date = parseISO(timestamp)
         isSameDate = isEqual(date, referenceDate);
-        
         timeAgo = `${published}` + formatDistanceToNow(date) + " ago";
     }
     return (
         <>
         {
-            isSameDate ? <></> : <span >&nbsp;<i>{timeAgo}</i></span>
+            isSameDate ? <></> : <span >&nbsp;<i className="time-ago">{timeAgo}</i></span>
         }
         </>
     )

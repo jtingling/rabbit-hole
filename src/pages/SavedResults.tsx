@@ -10,9 +10,7 @@ declare const window: any;
 const SavedResults: React.FC<{db: any, userId: string}> = ({db, userId }): JSX.Element => {
     let savedResults = useSelector(selectAllArticles);
     let statusRef = useRef<HTMLParagraphElement | null>(null);
-    if (!!statusRef.current) {
-        statusRef.current.innerText = "Make a search"
-    }
+
     useEffect(()=>{
         const gapi = window.gapi;
         if(!!gapi && !!statusRef.current) {

@@ -19,11 +19,9 @@ const HistoryCard: React.FC<{ word: IQueryData }> = ({ word }) => {
     }
     searchApi = word.searchType.slice(findIdx, -3);
     return (
-        <div className="history-card-container">
-            <p>Keyword: <Link to="/" onClick={() => { dispatch(updateUrl(url)); dispatch(updateQuery(query))} }>{word.searchWord}</Link> searched on: <span><i>{date}</i> with: {searchApi}</span></p>
-            
-            <p></p>
-        </div>
+        <ul className="history-card-container">
+            <li><Link to="/" onClick={() => { dispatch(updateUrl(url)); dispatch(updateQuery(query))} }>Keyword: {word.searchWord} searched on: <span><i>{date}</i> with: {searchApi}</span></Link></li>
+        </ul>
 
     )
 }

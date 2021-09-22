@@ -17,7 +17,7 @@ const SearchHistory: React.FC = () => {
             <ul>
                 {
                     querylist.map((query)=>{
-                        return <li><button>{query}</button></li>
+                        return <li className="search-history-list"><button>{query}</button></li>
                     })
                 }
             </ul>

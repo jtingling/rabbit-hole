@@ -1,5 +1,5 @@
 import React from 'react'
-import loading from '../images/Spinner-2.gif'
+import loadingSpinner from '../images/Spinner-2.gif'
 import '../styles/loading.css'
 const Loading: React.FC<{loadingStatus:boolean}> = ({loadingStatus}) => {
 
@@ -8,7 +8,7 @@ const Loading: React.FC<{loadingStatus:boolean}> = ({loadingStatus}) => {
         {
             loadingStatus &&
             <div className="result-load-container">
-                <img className='loading-gif' src={loading} alt='loading...'/>
+                <img className='loading-gif' src={loadingSpinner} alt='loading...'/>
             </div>
         }
         </>
