@@ -8,6 +8,7 @@ import Card from './components/Card';
 import Title from './components/Title';
 import SideBar from './components/SideBar';
 import Loading from './components/Loading';
+import ScrollTop from './components/ScrollTop';
 
 
 import { getQuery, getUrl } from './features/articles/searchSlice';
@@ -19,6 +20,8 @@ import PinnedQueries from './pages/PinnedQueries';
 import SaveButton from './components/SaveButton';
 
 import { loadGoogleScript } from './scripts/googleAuth';
+
+
 
 declare const window: any;
 
@@ -32,16 +35,15 @@ const App: React.FC = () => {
   const [db, setDb] = useState<any>(null);
   const [userId, setUserId] = useState<any>(null);
 
+
   const sideBarRef = useRef<HTMLElement>(null);
   const loginRef = useRef<HTMLButtonElement>(null);
-  const logoutRef = useRef<HTMLButtonElement>(null)
-  const subMenuRef = useRef<HTMLDivElement>(null);
+  const logoutRef = useRef<HTMLButtonElement>(null);
   const cardContainerRef = useRef<any>(null);
 
   const dispatch = useDispatch();
   const searchWord = useSelector(getQuery);
   const searchType = useSelector(getUrl);
-
 
   useEffect(() => {
     const dbName = 'articles';
@@ -199,6 +201,9 @@ const App: React.FC = () => {
     window.scrollTo(0, 0);
   }, [searchWord, searchType, dispatch])
 
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   const renderCards = () => {
     let articles;
@@ -235,11 +240,10 @@ const App: React.FC = () => {
           </Route>
           <Route path="/SavedResults" render={() => <SavedResults db={db} userId={userId}/>} />
           <Route path="/SearchHistory" component={PinnedQueries} />
-
         </Switch>
-        <SideBar menuRef={sideBarRef} subMenuRef={subMenuRef} />
-        
+        <SideBar menuRef={sideBarRef}/>
       </div>
+      <ScrollTop/>
     </div>
   )
 }
