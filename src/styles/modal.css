@@ -1,0 +1,64 @@
+.outer-window {
+    position: fixed;
+    border-radius: 5px;
+    border-style: solid;
+    padding: 5px 5px;
+    top: 25%;
+    left: 25%;
+    width: 50%;
+    height: auto;
+
+}
+.action {
+    grid-area: button;
+    border-radius: 5px;
+    width: 25px;
+    height: 25px;
+    justify-self: right;
+}
+.inner-window {
+    grid-area: inner-window;
+}
+.modal-title {
+    grid-area: title;
+    margin: 0px;
+}
+.modal-content {
+    grid-area: modal-content;
+    height: auto;
+}
+
+
+.modal-container {
+    display: grid;
+    grid-template-columns: 25px 1fr 1fr 25px;
+    grid-template-rows: auto;
+    grid-template-areas:
+        ". title title button"
+        ". modal-content modal-content modal-content"    
+}
+
+@media only screen and (max-width: 768px) {
+    .title-search {
+        text-align: center;
+    }
+    .title-layout {
+        width: 50%
+    }
+    .chips-layout {
+        height: 33px;
+    }
+    .outer-window {
+        width: 100%;
+        left: 0%;
+        height: auto;
+    }
+    .modal-container {
+        grid-template-rows: 1fr 1fr 1fr 1fr;
+        grid-template-areas:
+            ". title title button"
+            ". modal-content modal-content ."
+            ". modal-content modal-content ."
+            ". modal-content modal-content ."
+    }
+}

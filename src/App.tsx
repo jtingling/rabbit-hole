@@ -37,7 +37,7 @@ const App: React.FC = () => {
 
 
   const sideBarRef = useRef<HTMLElement>(null);
-  const loginRef = useRef<HTMLButtonElement>(null);
+  const loginRef = useRef<HTMLDivElement>(null);
   const logoutRef = useRef<HTMLButtonElement>(null);
   const cardContainerRef = useRef<any>(null);
 
@@ -229,7 +229,7 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <Title menuRef={sideBarRef} loginRef={loginRef} logoutRef={logoutRef} />
+      <Title menuRef={sideBarRef} />
       <div className='content-container'>
         <Switch>
           <Route path="/" exact>
@@ -239,9 +239,9 @@ const App: React.FC = () => {
             </div>
           </Route>
           <Route path="/SavedResults" render={() => <SavedResults db={db} userId={userId}/>} />
-          <Route path="/SearchHistory" component={PinnedQueries} />
+          <Route path="/SearchHistory" render={()=> <PinnedQueries/>}/>
         </Switch>
-        <SideBar menuRef={sideBarRef}/>
+        <SideBar menuRef={sideBarRef}  loginRef={loginRef} logoutRef={logoutRef}/>
       </div>
       <ScrollTop/>
     </div>

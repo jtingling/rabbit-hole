@@ -5,20 +5,25 @@ a {
 }
 
 /*SideBar.tsx*/
-
 html {
     background-color: #f5f5f5;
 }
 aside {
     background-color: lightblue;
 }
-li:hover {
+.menu-container li:hover {
     background-color: lightcoral;
 }
 .button-container {
     border-style:solid;
     border-radius: 25px;
     background-color: whitesmoke;
+}
+#signout-button {
+    background-color:orange;
+    border-color: gray;
+    
+    
 }
 
 /*Card.tsx*/
@@ -30,14 +35,6 @@ li:hover {
 }
 
 /*Title.tsx*/
-#authorize-button, #signout-button {
-    background-color:orange;
-    border-color: gray;
-    border-radius: 5px;
-    
-}
-
-
 input {
     border-end-end-radius: 5px;
     border-start-end-radius: 5px;
@@ -56,4 +53,17 @@ form button {
 .chip {
     border-radius: 25px;
     background-color:thistle;
+}
+
+/*History Card.tsx*/
+.history-card-container li:hover {
+    text-decoration: underline;
+}
+/*Modal.tsx*/
+.outer-window {
+    background-color: #96e2ec;
+
+}
+.action {
+    background-color: orange;
 }
