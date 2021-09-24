@@ -6,7 +6,6 @@ import { updateQuery, updateUrl } from "../features/articles/searchSlice"
 
 const HistoryCard: React.FC<{ word: IQueryData }> = ({ word }) => {
     let dispatch = useDispatch();
-    console.log(word);
     const { searchWord: query, searchType: url } = word;
     let bracketIdx = word.date.search(/\(/);
     const date = word.date.substr(0, bracketIdx); //all dates have the same format
@@ -19,8 +18,9 @@ const HistoryCard: React.FC<{ word: IQueryData }> = ({ word }) => {
     }
     searchApi = word.searchType.slice(findIdx, -3);
     return (
-        <ul className="history-card-container">
-            <li><Link to="/" onClick={() => { dispatch(updateUrl(url)); dispatch(updateQuery(query))} }>Keyword: {word.searchWord} searched on: <span><i>{date}</i> with: {searchApi}</span></Link></li>
+        <ul className="history-card-container" onClick={() => { dispatch(updateUrl(url)); dispatch(updateQuery(query))} }>
+            {word.searchWord === "NULL" ? <p><i>Search history appears here</i></p> : <li><Link to="/" >Keyword: {word.searchWord} searched on: <span><i>{date}</i> with: {searchApi}</span></Link></li>
+            }
         </ul>
 
     )

@@ -13,13 +13,15 @@ export interface Props {
 const Card: React.FC<Props> = ({ title, stub, image, publishDate, articleId, url, children }) => {
     const imgRef = useRef<HTMLImageElement>(document.createElement('img'))
     const titleRef = useRef<HTMLHeadingElement>(document.createElement('h4'))
+    const divRef = useRef<HTMLDivElement>(document.createElement('div'))
     const pRef = useRef<HTMLParagraphElement>(document.createElement('p'))
   
     const handleError = () => {
         imgRef.current.style.display = 'none';
         titleRef.current.style.textAlign = 'left';
-        pRef.current.style.width = '99%';
-        pRef.current.style.margin = '0 auto';
+        divRef.current.style.width = '99%';
+        divRef.current.style.margin = '0 auto';
+        pRef.current.style.height = '80px';
         
     }
     
@@ -30,11 +32,11 @@ const Card: React.FC<Props> = ({ title, stub, image, publishDate, articleId, url
                 <div className='animate-container'>
                     <h4 ref={titleRef} title={title}><a href={url} target="_blank" rel="noreferrer">{title}</a></h4>
                     <TimeAgo timestamp={publishDate} published={"Published "} />
-                    <p>{stub}</p>
+                    <p ref={pRef}>{stub}</p>
                 </div>
-                <p ref={pRef} className='card-children-container'>
+                <div ref={divRef} className='card-children-container'>
                         {children}
-                    </p>
+                </div>
             </div>
 
         </article>
