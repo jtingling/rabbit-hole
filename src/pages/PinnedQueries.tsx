@@ -7,8 +7,6 @@ const PinnedQueries: React.FC = () => {
 
     return (
         <div>
-            <h3>Search History</h3>
-
             {
                 pinnedWords.searches.map((queries) => {
                     return (
