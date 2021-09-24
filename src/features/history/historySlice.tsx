@@ -12,7 +12,7 @@ export interface IQueryData {
 }
 
 const initialState: IHistory = {
-    searches: []
+    searches: [{searchWord:"NULL", date:'none', searchType:'none'}]
 }
 
 const historySlice = createSlice({
